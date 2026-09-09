@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PATI 4Apps · 4 app nội bộ để vận hành Creative và Marketing · Kevin Kreative · PATI Group</title>
+<meta name="description" content="Cộng đồng học trò Thầy Thành — một công ty ecommerce nhỏ tự dựng 4 app, rồi vận hành hằng ngày bằng chính 4 app đó. Quang Nguyễn · PATI Group.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0B0D0A;
+  --white: #FFFFFF;
+  --lime: #9EDB00;
+  --soft: #F4F5F5;
+  --muted: #8A8F87;
+  --card: #141714;
+  --card2: #1A1E18;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(158,219,0,0.35);
+  --font-display: 'Roboto Condensed', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+a { color: var(--lime); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: none;
+  padding: clamp(1.2rem, 3.5vh, 2.4rem) clamp(1.2rem, 4.5vw, 3.5rem) clamp(3.2rem, 6vh, 4.5rem);
+  background:
+    radial-gradient(ellipse 80% 55% at 85% -10%, rgba(158,219,0,0.08), transparent 55%),
+    radial-gradient(ellipse 60% 40% at -10% 100%, rgba(158,219,0,0.05), transparent 50%),
+    var(--black);
+}
+.slide.active {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slide-inner {
+  width: 100%; height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.slide-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: clamp(0.8rem, 2vh, 1.4rem);
+  flex-shrink: 0;
+}
+.slide-meta .tier { color: var(--lime); }
+.slide-meta .tagline { color: var(--muted); font-weight: 500; letter-spacing: 0.08em; text-transform: none; font-family: var(--font-body); font-size: 0.7rem; }
+.slide-meta .s-num { font-variant-numeric: tabular-nums; letter-spacing: 0.12em; }
+
+.slide-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.section-label {
+  display: inline-block;
+  color: var(--lime);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+h1.slide-title, h2.slide-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.55rem, 3.2vw, 2.55rem);
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  color: var(--white);
+  margin-bottom: 0.55rem;
+  text-wrap: balance;
+}
+.slide-title .accent { color: var(--lime); }
+
+.lede {
+  font-size: clamp(0.92rem, 1.15vw, 1.08rem);
+  color: rgba(255,255,255,0.72);
+  max-width: 52rem;
+  margin-bottom: clamp(1rem, 2.5vh, 1.75rem);
+}
+
+.note {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  font-size: clamp(0.78rem, 0.95vw, 0.9rem);
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* Cover */
+.cover .slide-inner { justify-content: center; }
+.cover-kicker {
+  font-family: var(--font-display);
+  font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: var(--lime);
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+}
+.cover h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 5.2vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  margin-bottom: 1rem;
+  max-width: 18ch;
+}
+.cover .sub {
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  color: rgba(255,255,255,0.75);
+  max-width: 36rem;
+  margin-bottom: 2rem;
+}
+.cover-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 2rem;
+}
+.cover-meta strong { color: var(--white); font-weight: 600; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--lime);
+  color: var(--black);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 1.35rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(158,219,0,0.25); text-decoration: none !important; }
+.btn-ghost {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--border-strong);
+}
+.btn-ghost:hover { background: rgba(158,219,0,0.08); box-shadow: none; }
+.cover-tagline {
+  margin-top: 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Stats / cards */
+.grid { display: grid; gap: clamp(0.7rem, 1.5vw, 1.1rem); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.grid-3 { grid-template-columns: 1.1fr 1.2fr 1fr; }
+@media (max-width: 900px) {
+  .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
+  .slide-meta .tagline { display: none; }
+}
+@media (max-width: 600px) {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+.stat-card, .card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: clamp(0.85rem, 1.5vw, 1.25rem);
+}
+.stat-card .num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  color: var(--lime);
+  line-height: 1;
+  margin-bottom: 0.45rem;
+}
+.stat-card .label {
+  font-size: clamp(0.78rem, 0.95vw, 0.9rem);
+  color: rgba(255,255,255,0.7);
+}
+
+.pain-law {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.25rem;
+  align-items: stretch;
+}
+.pain-law .col-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.15rem;
+}
+.pain-law .col-h.pain { color: #FF6B6B; }
+.pain-law .col-h.law { color: var(--lime); }
+.pain-law .row {
+  display: contents;
+}
+.pain-law .cell {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+  font-size: clamp(0.82rem, 1vw, 0.95rem);
+  color: rgba(255,255,255,0.85);
+}
+.pain-law .cell.law-cell { border-color: rgba(158,219,0,0.2); }
+
+.app-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: clamp(0.9rem, 1.4vw, 1.2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-height: 0;
+}
+.app-card .idx {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--lime);
+  letter-spacing: 0.12em;
+}
+.app-card h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  line-height: 1.2;
+  color: var(--white);
+}
+.app-card p {
+  font-size: clamp(0.78rem, 0.95vw, 0.88rem);
+  color: rgba(255,255,255,0.68);
+  flex: 1;
+}
+
+/* IO slides */
+.io-layout {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.9fr) 1.4fr;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: start;
+}
+@media (max-width: 700px) { .io-layout { grid-template-columns: 1fr; } }
+.io-brand {
+  background: linear-gradient(160deg, var(--card2), var(--card));
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+.io-brand .name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: var(--lime);
+  margin-bottom: 0.6rem;
+}
+.io-brand .desc {
+  font-size: clamp(0.82rem, 1vw, 0.95rem);
+  color: rgba(255,255,255,0.75);
+}
+.io-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+@media (max-width: 500px) { .io-cols { grid-template-columns: 1fr; } }
+.io-box h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 0.65rem;
+}
+.io-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.io-box li {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.7rem 0.85rem;
+  font-size: clamp(0.8rem, 0.95vw, 0.9rem);
+  color: rgba(255,255,255,0.82);
+  position: relative;
+  padding-left: 1.35rem;
+}
+.io-box li::before {
+  content: '';
+  position: absolute;
+  left: 0.55rem; top: 1rem;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--lime);
+}
+
+/* Ecosystem overview */
+.lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+.lane {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.65rem;
+  align-items: stretch;
+}
+@media (max-width: 700px) {
+  .lane { grid-template-columns: 1fr; }
+}
+.lane-label {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.55rem 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--lime);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lane-label span { color: var(--muted); font-weight: 500; font-size: 0.65rem; letter-spacing: 0.04em; margin-top: 0.15rem; }
+.lane-nodes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+@media (max-width: 800px) {
+  .lane-nodes { grid-template-columns: 1fr 1fr; }
+}
+.node {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.45rem 0.55rem;
+  font-size: clamp(0.68rem, 0.85vw, 0.78rem);
+  color: rgba(255,255,255,0.78);
+  min-height: 3.2rem;
+}
+.node .nid {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--lime);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+.node.empty { background: transparent; border-style: dashed; opacity: 0.35; }
+.eco-cta { margin-top: 0.5rem; }
+
+/* Metrics table */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: clamp(0.78rem, 1vw, 0.92rem);
+  margin-bottom: 0.5rem;
+}
+.table th {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--lime);
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border-strong);
+}
+.table td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  color: rgba(255,255,255,0.85);
+  vertical-align: top;
+}
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: rgba(158,219,0,0.04); }
+.table .scenario { font-weight: 600; color: var(--white); }
+
+/* CEO actions */
+.actions { display: flex; flex-direction: column; gap: 0.55rem; }
+.action {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.7rem 0.95rem;
+}
+.action .n {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--lime);
+  line-height: 1.2;
+}
+.action p {
+  font-size: clamp(0.85rem, 1.05vw, 0.98rem);
+  color: rgba(255,255,255,0.85);
+}
+
+/* Closing */
+.close-slide .slide-body { text-align: center; align-items: center; }
+.close-slide h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.15;
+  max-width: 18ch;
+  margin-bottom: 1.1rem;
+}
+.close-slide .sub {
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  color: rgba(255,255,255,0.72);
+  max-width: 32rem;
+  margin-bottom: 2rem;
+}
+.close-slide .brand-line {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--lime);
+  font-size: 0.9rem;
+}
+
+/* Nav chrome */
+.chrome {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem clamp(1rem, 3vw, 2rem);
+  background: linear-gradient(transparent, rgba(11,13,10,0.92) 40%);
+  pointer-events: none;
+}
+.chrome > * { pointer-events: auto; }
+.dots {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex: 1;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, transform 0.15s;
+}
+.dot.active { background: var(--lime); transform: scale(1.25); }
+.dot:hover { background: rgba(158,219,0,0.6); }
+.nav-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.nav-btn:hover { border-color: var(--lime); color: var(--lime); }
+.hint {
+  position: fixed;
+  top: 0.75rem; right: 1rem;
+  z-index: 40;
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-family: var(--font-body);
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+@media (max-width: 600px) { .hint { display: none; } }
+
+.formula {
+  font-size: clamp(0.85rem, 1.05vw, 0.98rem);
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--card);
+  border-left: 3px solid var(--lime);
+  border-radius: 0 6px 6px 0;
+}
+</style>
+</head>
+<body>
+<div class="hint">← → · Space · click</div>
+<div class="deck" id="deck">
+
+  <!-- 01 COVER -->
+  <section class="slide cover active" data-i="0" aria-label="Cover">
+    <div class="slide-inner">
+      <div class="cover-kicker">Cộng đồng học trò Thầy Thành</div>
+      <h1>4 APP NỘI BỘ ĐỂ VẬN HÀNH <span class="accent">CREATIVE VÀ MARKETING</span></h1>
+      <p class="sub">Một công ty ecommerce nhỏ tự dựng 4 app, rồi vận hành hằng ngày bằng chính 4 app đó.</p>
+      <p class="cover-meta"><strong>Kevin Kreative (Quang Nguyễn)</strong> · Founder PATI Group<br>PATI Group · patigroup.com</p>
+      <div class="cta-row">
+        <a class="btn" href="ecosystem-workflow.html?present=1">Mở sơ đồ tương tác →</a>
+        <button type="button" class="btn btn-ghost" data-next>Bắt đầu trình chiếu</button>
+      </div>
+      <p class="cover-tagline">Where Humans Direct, AI Delivers</p>
+    </div>
+  </section>
+
+  <!-- 02 INTRO -->
+  <section class="slide" data-i="1" aria-label="Giới thiệu PATI Group">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">1 · Giới thiệu PATI Group</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">02 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">ECOMMERCE DTC, BÁN THỰC PHẨM BỔ SUNG SANG <span class="accent">US VÀ EU</span></h2>
+        <p class="lede">Văn phòng ở TP.HCM. Bán trực tiếp trên website của mình, không bán qua sàn.</p>
+        <div class="grid grid-4">
+          <div class="stat-card"><div class="num">1</div><div class="label">store wellnessnest.co</div></div>
+          <div class="stat-card"><div class="num">12</div><div class="label">SKU đang bán</div></div>
+          <div class="stat-card"><div class="num">2</div><div class="label">vendor sản phẩm</div></div>
+          <div class="stat-card"><div class="num">4</div><div class="label">app nội bộ tự dựng</div></div>
+        </div>
+        <p class="note">Đây là số quy mô, không phải số kết quả. Bài này nói cách vận hành, không nói doanh thu.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 WHY -->
+  <section class="slide" data-i="2" aria-label="Vì sao tôi phải dựng app">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">1 · Vì sao tôi phải dựng app</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">03 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">KHÔNG THIẾU Ý TƯỞNG. <span class="accent">THIẾU DẤU VẾT CỦA VIỆC.</span></h2>
+        <p class="lede">Bên trái là chỗ đau hôm nay. Bên phải là luật tôi đặt ra cho bốn app.</p>
+        <div class="pain-law">
+          <div class="col-h pain">Chỗ đau</div>
+          <div class="col-h law">Luật đặt ra</div>
+          <div class="cell">Việc rải rác. Không biết ai đang giữ khâu nào.</div>
+          <div class="cell law-cell">Mỗi khâu một chủ. Một người chịu trách nhiệm.</div>
+          <div class="cell">Một brief bị viết lại hai lần ở hai chỗ.</div>
+          <div class="cell law-cell">Một brief, một version. Không viết lại lần hai.</div>
+          <div class="cell">Kết quả ads không truy được về đúng video, đúng creator.</div>
+          <div class="cell law-cell">Kết quả phải khớp đúng version và đúng creator.</div>
+          <div class="cell">Bài học nằm trong đầu người, không nằm trong hệ thống.</div>
+          <div class="cell law-cell">Mỗi test đóng bằng Win, Loss hoặc Inconclusive.</div>
+        </div>
+        <p class="note">Cột phải là mô hình vận hành mục tiêu. Không phải tuyên bố mọi kết nối đã chạy xong.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 FIVE YO -->
+  <section class="slide" data-i="3" aria-label="Giải thích kiểu cho trẻ 5 tuổi">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">2 · Giải thích kiểu cho trẻ 5 tuổi</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">04 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">BỐN XƯỞNG TRONG CÙNG <span class="accent">MỘT CỬA HÀNG</span></h2>
+        <p class="lede">Bỏ hết thuật ngữ. Đây là cách bốn app chia việc với nhau.</p>
+        <div class="grid grid-4">
+          <div class="app-card">
+            <span class="idx">1</span>
+            <h3>ADVAULT — Xưởng phim</h3>
+            <p>Tìm ý tưởng video, dùng kho video đã thu thập, viết brief, giúp editor dựng.</p>
+          </div>
+          <div class="app-card">
+            <span class="idx">2</span>
+            <h3>MOS — Xưởng ảnh và tin nhắn</h3>
+            <p>Nghiên cứu và tạo ảnh cho ads. Viết bài organic. Sinh email và gửi đi.</p>
+          </div>
+          <div class="app-card">
+            <span class="idx">3</span>
+            <h3>PORTAL — Thầy dạy và bảng việc</h3>
+            <p>Giao việc video cho creator, duyệt bài, kèm nghề, ghi nhận thù lao.</p>
+          </div>
+          <div class="app-card">
+            <span class="idx">4</span>
+            <h3>ADLAUNCHER — Tủ kính bày hàng</h3>
+            <p>Media buyer mang ảnh, video đã duyệt ra chạy ads. Rồi trả bảng điểm về.</p>
+          </div>
+        </div>
+        <p class="note">Hai xưởng học từ kết quả rồi chọn ý tưởng tốt hơn. Việc cũ kết thúc; bài học chọn việc mới. Không ai sửa mãi một video.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 ECOSYSTEM / TOÀN CẢNH (user: slide 04 context = vòng khép kín) -->
+  <section class="slide" data-i="4" aria-label="Toàn cảnh · Một vòng khép kín">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">2 · Toàn cảnh · Một vòng khép kín</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">05 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">BỐN APP NỐI NHAU THÀNH <span class="accent">MỘT VÒNG</span></h2>
+        <div class="lanes">
+          <div class="lane">
+            <div class="lane-label">01 · VIDEO<span>AdVault + Portal</span></div>
+            <div class="lane-nodes">
+              <div class="node"><span class="nid">V1–2 · ADVAULT</span>Nghiên cứu video + brief</div>
+              <div class="node"><span class="nid">V3–4 · CREATOR</span>Nhận việc, dựng video</div>
+              <div class="node"><span class="nid">V5 · PORTAL</span>Duyệt và nhận video</div>
+              <div class="node"><span class="nid">V6 · ADVAULT + PORTAL</span>Áp bài học, kèm creator</div>
+            </div>
+          </div>
+          <div class="lane">
+            <div class="lane-label">02 · CHẠY ADS<span>AdLauncher</span></div>
+            <div class="lane-nodes">
+              <div class="node empty"></div>
+              <div class="node empty"></div>
+              <div class="node"><span class="nid">L1 · ADLAUNCHER</span>Chạy creative đã duyệt</div>
+              <div class="node"><span class="nid">L2 · ADLAUNCHER</span>Khớp kết quả đúng version</div>
+            </div>
+          </div>
+          <div class="lane">
+            <div class="lane-label">03 · ẢNH<span>MOS</span></div>
+            <div class="lane-nodes">
+              <div class="node"><span class="nid">I1–2 · MOS</span>Nghiên cứu ảnh + brief</div>
+              <div class="node empty"></div>
+              <div class="node"><span class="nid">I3 · MOS</span>Tạo và duyệt ảnh</div>
+              <div class="node"><span class="nid">I4 · MOS</span>Áp bài học ảnh</div>
+            </div>
+          </div>
+          <div class="lane">
+            <div class="lane-label">04 · ORGANIC + EMAIL<span>MOS</span></div>
+            <div class="lane-nodes">
+              <div class="node empty"></div>
+              <div class="node"><span class="nid">M2 · MOS EMAIL</span>Sinh, duyệt và gửi</div>
+              <div class="node"><span class="nid">M1 · MOS POSTS</span>Soạn, duyệt và đăng</div>
+              <div class="node empty"></div>
+            </div>
+          </div>
+        </div>
+        <div class="eco-cta cta-row">
+          <a class="btn" href="ecosystem-workflow.html?present=1">Mở sơ đồ tương tác →</a>
+        </div>
+        <p class="note">Video đi làn trên, ảnh đi làn dưới, hai làn gặp nhau đúng một chỗ là AdLauncher. Nét liền là bàn giao việc; nét đứt là chu kỳ mới, phải duyệt riêng.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 ADVAULT -->
+  <section class="slide" data-i="5" aria-label="App 1 · Video · AdVault">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">2 · App 1 · Video</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">06 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">ADVAULT — <span class="accent">XƯỞNG PHIM</span> CỦA HỆ THỐNG</h2>
+        <div class="io-layout" style="margin-top:1rem">
+          <div class="io-brand">
+            <div class="name">ADVAULT</div>
+            <p class="desc">AdVault sở hữu VIDEO: nghiên cứu, viết brief, dựng, học từ kết quả.</p>
+          </div>
+          <div class="io-cols">
+            <div class="io-box">
+              <h4>Đầu vào</h4>
+              <ul>
+                <li>Kho video quảng cáo đã thu thập</li>
+                <li>Dữ kiện sản phẩm và ưu đãi đã xác minh</li>
+                <li>Bài học từ các test video trước</li>
+              </ul>
+            </div>
+            <div class="io-box">
+              <h4>Đầu ra</h4>
+              <ul>
+                <li>Brief video ghi rõ từng đầu việc phải giao</li>
+                <li>Bản nộp video có đánh version</li>
+                <li>Kho video và bằng chứng tái dùng được</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="note">Brief video sinh ra ở AdVault, rồi chuyển sang Portal để giao creator. Không viết lại cùng một brief ở app thứ hai.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 MOS -->
+  <section class="slide" data-i="6" aria-label="App 2 · Ảnh, organic, email · MOS">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">2 · App 2 · Ảnh, organic, email</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">07 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">MOS — <span class="accent">XƯỞNG HÌNH VÀ TIN NHẮN</span></h2>
+        <div class="io-layout" style="margin-top:1rem">
+          <div class="io-brand">
+            <div class="name">MARKETING OS</div>
+            <p class="desc">MOS sở hữu ẢNH: nghiên cứu, brief, tạo ảnh, viết bài organic, sinh email.</p>
+          </div>
+          <div class="io-cols">
+            <div class="io-box">
+              <h4>Đầu vào</h4>
+              <ul>
+                <li>Nghiên cứu ảnh và dữ kiện sản phẩm</li>
+                <li>Brief kênh, tệp khách, lịch đăng</li>
+                <li>Bài học kênh từ chu kỳ trước</li>
+              </ul>
+            </div>
+            <div class="io-box">
+              <h4>Đầu ra</h4>
+              <ul>
+                <li>Ảnh paid đã duyệt, sẵn cho AdLauncher</li>
+                <li>Bài organic đã đăng qua nhà cung cấp</li>
+                <li>Email: tiêu đề, nội dung, layout, đã gửi</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="note">Organic và email nằm ngoài vòng paid ads; chúng đóng khi nhà cung cấp xác nhận đã đăng, đã gửi. Đường ảnh MOS sang AdLauncher chưa nghiệm thu.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 PORTAL -->
+  <section class="slide" data-i="7" aria-label="App 3 · Lực lượng creator · Portal">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">2 · App 3 · Lực lượng creator</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">08 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">CREATIVE PORTAL — <span class="accent">THẦY DẠY NGHỀ</span> VÀ BẢNG VIỆC</h2>
+        <div class="io-layout" style="margin-top:1rem">
+          <div class="io-brand">
+            <div class="name">CREATIVE PORTAL</div>
+            <p class="desc">Portal quản người: giao việc, duyệt bài creator, kèm nghề, ghi nhận thù lao.</p>
+          </div>
+          <div class="io-cols">
+            <div class="io-box">
+              <h4>Đầu vào</h4>
+              <ul>
+                <li>Brief video đã duyệt từ AdVault</li>
+                <li>Bài nộp của creator theo từng version</li>
+                <li>Kết quả test khớp đúng creator</li>
+              </ul>
+            </div>
+            <div class="io-box">
+              <h4>Đầu ra</h4>
+              <ul>
+                <li>Task creator đã có người nhận</li>
+                <li>Version video được duyệt, sang Launcher</li>
+                <li>Bằng chứng chất lượng, coaching, thù lao</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="note">Portal sở hữu quyền duyệt bài creator. Xếp hạng dùng bốn tiêu chí nghề, cửa sổ 90 ngày. Không xếp hạng người bằng ROAS thô.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 ADLAUNCHER -->
+  <section class="slide" data-i="8" aria-label="App 4 · Chạy ads và đo kết quả">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">2 · App 4 · Chạy ads và đo kết quả</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">09 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">ADLAUNCHER — <span class="accent">CHẠY ADS</span> VÀ TRẢ BẢNG ĐIỂM</h2>
+        <div class="io-layout" style="margin-top:1rem">
+          <div class="io-brand">
+            <div class="name">ADLAUNCHER</div>
+            <p class="desc">Media buyer chạy test trong giới hạn, rồi trả phiếu kết quả khớp đúng bản chạy.</p>
+          </div>
+          <div class="io-cols">
+            <div class="io-box">
+              <h4>Đầu vào</h4>
+              <ul>
+                <li>Version ảnh, video đã được duyệt</li>
+                <li>Tài khoản, đích đến, ngân sách</li>
+                <li>Luật quyết định đặt trước khi chạy</li>
+              </ul>
+            </div>
+            <div class="io-box">
+              <h4>Đầu ra</h4>
+              <ul>
+                <li>Ad ID của nhà cung cấp quảng cáo</li>
+                <li>Xác nhận đã phân phối thật, không chỉ tạo</li>
+                <li>Phiếu kết quả khớp đúng version đã chạy</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="note">Kết quả video quay về AdVault và Portal. Kết quả ảnh quay về MOS. Thiếu số liệu là chưa có, không phải bằng 0.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 METRICS -->
+  <section class="slide" data-i="9" aria-label="Hai chỉ số cốt lõi">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">2 · Hai chỉ số cốt lõi · Ví dụ minh họa</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">10 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">NĂNG SUẤT <span class="accent">NHÂN</span> HIỆU QUẢ</h2>
+        <p class="formula">Năng suất = chu kỳ học hợp lệ / 100 giờ người. Hiệu quả = winner đạt chuẩn ÷ chu kỳ hợp lệ.</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Kịch bản</th>
+              <th>Chu kỳ hợp lệ · Winner / 100 giờ người</th>
+              <th>Sao Bắc Đẩu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="scenario">Mốc gốc</td>
+              <td>20 chu kỳ · 4 winner</td>
+              <td>4 test thắng / 100 giờ</td>
+            </tr>
+            <tr>
+              <td class="scenario">Chỉ chạy nhanh hơn</td>
+              <td>30 chu kỳ · 6 winner</td>
+              <td>6 test thắng / 100 giờ</td>
+            </tr>
+            <tr>
+              <td class="scenario">Chỉ chọn creative tốt hơn</td>
+              <td>20 chu kỳ · 6 winner</td>
+              <td>6 test thắng / 100 giờ</td>
+            </tr>
+            <tr>
+              <td class="scenario">Cải thiện cả hai</td>
+              <td>30 chu kỳ · 9 winner</td>
+              <td>9 test thắng / 100 giờ</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">Ví dụ minh họa, không phải kết quả hiện tại. Giờ người tính cả việc bị loại và test không ra kết quả.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 THIS WEEK -->
+  <section class="slide" data-i="10" aria-label="Tuần này">
+    <div class="slide-inner">
+      <div class="slide-meta">
+        <span class="tier">3 · Tuần này</span>
+        <span class="tagline">Where Humans Direct, AI Delivers</span>
+        <span class="s-num">11 / 12</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">NĂM VIỆC CEO <span class="accent">LÀM ĐƯỢC NGAY</span></h2>
+        <p class="lede">Không cần lập trình viên. Không cần ngân sách mới. Cần một quyết định.</p>
+        <div class="actions">
+          <div class="action"><span class="n">1</span><p>Chọn 1 sản phẩm và 1 kênh làm thí điểm. Viết tên ra giấy hôm nay.</p></div>
+          <div class="action"><span class="n">2</span><p>Bấm giờ một tuần: từ lúc có brief tới lúc có quyết định. Ghi con số thật.</p></div>
+          <div class="action"><span class="n">3</span><p>Liệt kê 3 việc đội đang làm hai lần. Xoá một việc trong số đó.</p></div>
+          <div class="action"><span class="n">4</span><p>Chốt luật đóng test: Win / Loss / Inconclusive. Không sửa mãi một video.</p></div>
+          <div class="action"><span class="n">5</span><p>Giao 1 người làm chủ 1 app. Hẹn ngày kiểm, không hẹn ngày xong.</p></div>
+        </div>
+        <p class="note">Làm xong năm việc này rồi hãy hỏi “nên mua app nào”. Thứ tự đó rẻ hơn rất nhiều.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 THANKS -->
+  <section class="slide close-slide" data-i="11" aria-label="Cảm ơn">
+    <div class="slide-inner">
+      <div class="slide-body">
+        <h1>CẢM ƠN ANH CHỊ ĐÃ NGỒI TỚI <span class="accent">PHÚT CUỐI</span></h1>
+        <p class="sub">Về nhà chọn một việc. Chạy hết một vòng trong tuần này. Rồi nhắn tôi kết quả.</p>
+        <div class="cta-row" style="justify-content:center">
+          <a class="btn" href="ecosystem-workflow.html?present=1">Mở sơ đồ tương tác →</a>
+        </div>
+        <p class="brand-line" style="margin-top:2.5rem">PATI GROUP · PATIGROUP.COM</p>
+        <p class="cover-tagline" style="margin-top:1rem">Where Humans Direct, AI Delivers</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="chrome" aria-label="Điều khiển trình chiếu">
+  <button type="button" class="nav-btn" id="prevBtn" aria-label="Slide trước">←</button>
+  <div class="dots" id="dots" role="tablist" aria-label="Chọn slide"></div>
+  <button type="button" class="nav-btn" id="nextBtn" aria-label="Slide sau">→</button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsEl = document.getElementById('dots');
+  let i = 0;
+  const n = slides.length;
+
+  slides.forEach((_, idx) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dot' + (idx === 0 ? ' active' : '');
+    b.setAttribute('aria-label', 'Slide ' + (idx + 1));
+    b.addEventListener('click', (e) => { e.stopPropagation(); go(idx); });
+    dotsEl.appendChild(b);
+  });
+  const dots = Array.from(dotsEl.querySelectorAll('.dot'));
+
+  function go(to) {
+    if (to < 0 || to >= n) return;
+    slides[i].classList.remove('active');
+    dots[i].classList.remove('active');
+    i = to;
+    slides[i].classList.add('active');
+    dots[i].classList.add('active');
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  function next() { go(Math.min(n - 1, i + 1)); }
+  function prev() { go(Math.max(0, i - 1)); }
+
+  document.getElementById('nextBtn').addEventListener('click', (e) => { e.stopPropagation(); next(); });
+  document.getElementById('prevBtn').addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+
+  document.querySelectorAll('[data-next]').forEach((el) => {
+    el.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); next();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); prev();
+    } else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(n - 1); }
+  });
+
+  // Click / tap next, but ignore interactive controls and links
+  document.getElementById('deck').addEventListener('click', (e) => {
+    if (e.target.closest('a, button, .chrome, .dots')) return;
+    next();
+  });
+
+  // Touch swipe
+  let tx = null;
+  document.addEventListener('touchstart', (e) => { tx = e.changedTouches[0].screenX; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (tx == null) return;
+    const dx = e.changedTouches[0].screenX - tx;
+    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+    tx = null;
+  }, { passive: true });
+
+  const hash = parseInt((location.hash || '').replace('#', ''), 10);
+  if (hash >= 1 && hash <= n) go(hash - 1);
+})();
+</script>
+</body>
+</html>
