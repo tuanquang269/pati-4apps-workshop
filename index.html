@@ -1,8 +1,20 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function () {
+  try {
+    var t = new URLSearchParams(location.search).get('theme');
+    if (t !== 'light' && t !== 'dark') {
+      try { t = localStorage.getItem('pati-4apps-theme'); } catch (e) {}
+    }
+    if (t !== 'light' && t !== 'dark') t = 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
 <title>PATI 4Apps · 4 app nội bộ để vận hành Creative và Marketing · Kevin Kreative · PATI Group</title>
 <meta name="description" content="Cộng đồng học trò Thầy Thành — một công ty ecommerce nhỏ tự dựng 4 app, rồi vận hành hằng ngày bằng chính 4 app đó. Quang Nguyễn · PATI Group.">
 <style>
@@ -68,6 +80,75 @@
   --border-strong: rgba(158,219,0,0.35);
   --font-display: 'Roboto Condensed', 'Arial Narrow', sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+
+html[data-theme="light"] {
+  --black: #F4F5F5;
+  --white: #0B0D0A;
+  --lime: #6B9A00;
+  --soft: #FFFFFF;
+  --muted: #5C6358;
+  --card: #FFFFFF;
+  --card2: #F0F2F0;
+  --border: rgba(11,13,10,0.10);
+  --border-strong: rgba(107,154,0,0.45);
+  color-scheme: light;
+}
+html[data-theme="light"] body {
+  background: var(--black);
+  color: var(--white);
+}
+html[data-theme="light"] .slide {
+  background:
+    radial-gradient(ellipse 80% 55% at 85% -10%, rgba(158,219,0,0.14), transparent 55%),
+    radial-gradient(ellipse 60% 40% at -10% 100%, rgba(158,219,0,0.08), transparent 50%),
+    #F4F5F5;
+}
+html[data-theme="light"] .logo-tile,
+html[data-theme="light"] .cell,
+html[data-theme="light"] .app-detail .io-brand,
+html[data-theme="light"] .shot,
+html[data-theme="light"] .app-shot {
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: 0 1px 2px rgba(11,13,10,0.04);
+}
+html[data-theme="light"] .eco-frame-wrap {
+  background: #f8fafc;
+  border-color: rgba(11,13,10,0.12);
+}
+html[data-theme="light"] .eco-frame-wrap iframe { background: #f8fafc; }
+html[data-theme="light"] .eco-frame-wrap .open-full {
+  background: rgba(255,255,255,0.92);
+  color: var(--lime);
+  border-color: rgba(11,13,10,0.12);
+}
+html[data-theme="light"] .chrome {
+  background: rgba(244,245,245,0.92);
+  border-color: rgba(11,13,10,0.08);
+}
+html[data-theme="light"] .nav-btn {
+  color: var(--white);
+  border-color: rgba(11,13,10,0.15);
+}
+html[data-theme="light"] .dot { background: rgba(11,13,10,0.18); }
+html[data-theme="light"] .dot.active { background: var(--lime); }
+html[data-theme="light"] .hint { color: var(--muted); }
+html[data-theme="light"] .btn {
+  background: var(--lime);
+  color: #0B0D0A;
+}
+html[data-theme="light"] .btn-ghost {
+  background: transparent;
+  color: var(--white);
+  border-color: rgba(11,13,10,0.2);
+}
+html[data-theme="light"] .slide[data-i="4"] .note {
+  background: linear-gradient(180deg, transparent, rgba(244,245,245,0.95) 35%);
+}
+html[data-theme="light"] .close-slide .share-qr img {
+  border: 1px solid rgba(11,13,10,0.08);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -818,6 +899,7 @@ h1.slide-title, h2.slide-title {
         <div class="eco-frame-wrap">
           <a class="open-full" href="ecosystem-workflow.html?present=1" target="_blank" rel="noopener">Mở full →</a>
           <iframe
+            id="ecoFrame"
             title="Sơ đồ vòng khép kín 4 app"
             src="ecosystem-workflow.html?present=1&amp;embed=1"
             loading="lazy"
@@ -1113,6 +1195,54 @@ h1.slide-title, h2.slide-title {
 
   const hash = parseInt((location.hash || '').replace('#', ''), 10);
   if (hash >= 1 && hash <= n) go(hash - 1);
+})();
+</script>
+
+<script>
+(function () {
+  function theme() {
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+  function withTheme(url) {
+    try {
+      var u = new URL(url, location.href);
+      u.searchParams.set('theme', theme());
+      return u.pathname.split('/').pop() + u.search + u.hash;
+    } catch (e) {
+      return url;
+    }
+  }
+  function syncDiagramLinks() {
+    document.querySelectorAll('a[href*="ecosystem-workflow.html"]').forEach(function (a) {
+      a.href = withTheme(a.getAttribute('href'));
+    });
+    var frame = document.getElementById('ecoFrame');
+    if (frame) {
+      var next = withTheme('ecosystem-workflow.html?present=1&embed=1');
+      if (frame.getAttribute('src') !== next) frame.setAttribute('src', next);
+    }
+  }
+  syncDiagramLinks();
+  // optional toggle via ?theme= already applied; expose tiny control
+  var hint = document.querySelector('.hint');
+  if (hint && !document.getElementById('themeToggle')) {
+    var b = document.createElement('button');
+    b.id = 'themeToggle';
+    b.type = 'button';
+    b.textContent = theme() === 'light' ? 'Dark' : 'Light';
+    b.style.cssText = 'margin-left:0.75rem;border:1px solid rgba(127,127,127,0.35);background:transparent;color:inherit;font:inherit;font-size:0.65rem;padding:0.15rem 0.4rem;border-radius:4px;cursor:pointer;opacity:0.85';
+    b.addEventListener('click', function () {
+      var next = theme() === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('pati-4apps-theme', next); } catch (e) {}
+      var u = new URL(location.href);
+      u.searchParams.set('theme', next);
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
+      b.textContent = next === 'light' ? 'Dark' : 'Light';
+      syncDiagramLinks();
+    });
+    hint.appendChild(b);
+  }
 })();
 </script>
 </body>
