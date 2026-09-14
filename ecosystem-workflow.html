@@ -4770,6 +4770,17 @@
       animation: none !important;
       stroke-dashoffset: 0;
     }
+    /* Deck iframe (present+embed): loop arrow dash so hover/presentation always shows motion */
+    html[data-present="true"][data-embed="true"][data-motion="live"] svg[data-animation="trace"] [data-animate="edge"] {
+      animation: archify-edge-flow 2.4s linear infinite !important;
+      animation-delay: calc(var(--step, 0) * 160ms);
+    }
+    html[data-present="true"][data-embed="true"][data-motion="live"] svg[data-animation="trace"] [data-animate="node"] {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: archify-node-pulse 3.6s ease-in-out infinite !important;
+      animation-delay: calc(var(--step, 0) * 160ms);
+    }
     @keyframes archify-edge-flow {
       0% { stroke-dasharray: 10 8; stroke-dashoffset: 54; opacity: 0.42; }
       88% { stroke-dasharray: 10 8; stroke-dashoffset: 0; opacity: 1; }
@@ -7271,6 +7282,17 @@
       }
       function settleAmbient(reason) {
         if (!capable) return false;
+        // Deck embed needs continuous arrow motion for presenters / hover expectation
+        if (html.getAttribute('data-present') === 'true' && html.getAttribute('data-embed') === 'true'
+            && !effectivePaused() && !owner && !html.hasAttribute('data-share-playback')
+            && !html.hasAttribute('data-document-hidden')) {
+          ambientStarted = true;
+          ambientPending.clear();
+          detachAmbientBoundary();
+          html.setAttribute('data-ambient-motion', 'running');
+          html.setAttribute('data-ambient-settle-reason', 'deck-loop');
+          return false;
+        }
         ambientStarted = true;
         ambientPending.clear();
         detachAmbientBoundary();
